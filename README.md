@@ -33,6 +33,9 @@ This project provides a scalable backend that:
 * ✅ SQLAlchemy ORM models
 * ✅ Asynchronous processing using Celery + Redis
 * ✅ Background task execution for log analysis
+* ✅ Rule-based + AI-like log analysis engine
+* ✅ Automated decision engine for system actions
+* ✅Scalable backedn architecture
 
 ---
 

@@ -6,11 +6,11 @@ from app.services.log_processor import (
     detect_repeated_patterns
 )
 
+from app.services.ai_engine import generate_insight
 from app.services.decision_engine import decide_action
 
 from app.db.session import SessionLocal
 from app.models.log import Log
-
 
 @celery_app.task
 def process_log(log_id: int, message: str):
@@ -24,6 +24,7 @@ def process_log(log_id: int, message: str):
         pattern = detect_error_patterns(message)
         is_repeated = detect_repeated_patterns(message)
 
+        insight = generate_insight(message, category, pattern)
         action = decide_action(category, pattern)
 
         if "error" in message.lower():
@@ -31,24 +32,37 @@ def process_log(log_id: int, message: str):
         else:
             status = "processed"
 
-
         log_entry = db.query(Log).filter(Log.id == log_id).first()
 
         if log_entry:
             log_entry.level = category
             log_entry.status = status
-            log_entry.pattern = str(pattern)
+            log_entry.pattern = ", ".join(pattern) if pattern else None
             log_entry.action = action
+            log_entry.analysis = insight
 
             db.commit()
 
             print(f"[UPDATED] Log {log_id} updated successfully")
 
+            if is_repeated:
+                print(f"[ALERT] Repeated issue detected for log {log_id}")
+
+            print(f"""
+[DEBUG]
+Category: {category}
+Pattern: {pattern}
+Action: {action}
+Insight: {insight}
+""")
+
         else:
             print(f"[ERROR] Log {log_id} not found")
 
     except Exception as e:
+        db.rollback()
         print(f"[CELERY ERROR]: {e}")
+        raise e
 
     finally:
         db.close()

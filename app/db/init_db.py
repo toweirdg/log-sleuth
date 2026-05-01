@@ -2,5 +2,6 @@ from app.db.session import engine
 from app.db.base import Base
 from app.models.log import Log
 
+
 def init_db():
-	Base.metadata.create_all(bind=engine)
+    Base.metadata.create_all(bind=engine)

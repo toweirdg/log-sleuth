@@ -74,3 +74,17 @@ def list_logs(status: str = None, db: Session = Depends(get_db)):
 	logs = query.all()
 
 	return logs
+
+@router.get("/logs/stats")
+def log_stats(db: Session = Depends(get_db)):
+
+    total = db.query(Log).count()
+    errors = db.query(Log).filter(Log.level == "ERROR").count()
+    processed = db.query(Log).filter(Log.status.like("processed%")).count()
+
+    return{
+        "total_logs":total,
+	"error_logs":errors,
+	"processed_logs":processed
+    }
+

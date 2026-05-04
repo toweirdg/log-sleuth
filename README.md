@@ -1,55 +1,64 @@
 # Log Intelligence Engine 🚀
 
-AI-powered backend system to analyze logs, detect anomalies, and automate operational decisions using asynchronous processing and AI.
+AI-powered backend system for analyzing logs, detecting anomalies, and generating actionable insights using asynchronous processing.
 
 ---
 
 ## 🧠 Problem
 
-Modern systems generate massive volumes of logs. Engineers often struggle to:
+Modern distributed systems generate massive volumes of logs, making it difficult to:
 
 * Detect issues in real-time
 * Identify root causes quickly
-* Prevent downtime before escalates
+* Prevent failures before escalation
 
 ---
 
 ## 💡 Solution
 
-This project provides a scalable backend that:
+This project implements a scalable backend system that:
 
-* Ingests logs via API
-* Stores them in PostgreSQL
+* Ingests logs via REST API
+* Stores logs in PostgreSQL
 * Processes logs asynchronously using Celery + Redis
-* Prepares logs for AI-based analysis and decision-making
+* Analyzes logs using rule-based + AI-inspired logic  
+* Generates insights and recommended actions
+  
+---
+
+## 🚀 Demo Flow
+
+1. `POST /logs` → Submit log  
+2. Background worker processes log asynchronously  
+3. AI engine generates insight + action  
+4. `GET /logs/{id}` → Retrieve processed result  
+5. `GET /logs/stats` → View aggregated system metrics  
 
 ---
 
-## ⚙️ Current Features (Phase 1–3)
+## ⚙️ Features
 
-* ✅ FastAPI backend
-* ✅ PostgreSQL integration
-* ✅ Log ingestion API (`/logs`)
-* ✅ SQLAlchemy ORM models
-* ✅ Asynchronous processing using Celery + Redis
-* ✅ Background task execution for log analysis
-* ✅ Rule-based + AI-like log analysis engine
-* ✅ Automated decision engine for system actions
-* ✅Scalable backedn architecture
+* FastAPI backend with RESTful design  
+* PostgreSQL integration with SQLAlchemy ORM  
+* Asynchronous processing using Celery + Redis  
+* Rule-based + AI-inspired log analysis engine  
+* Automated decision engine for system actions  
+* Log analytics endpoint (`/logs/stats`)  
+* Dockerized services for reproducible setup 
 
 ---
 
 ## 🏗️ Architecture (Current)
 
 Client 
-   ↓
+   ⟶
 FastAPI (API Layer) 
-   ↓ 
+   ⟶ 
 PostgreSQL (Storage) 
-   ↓ 
-Redis (Queue) 
-   ↓ 
-Celery Worker (Processing)
+   ⟶
+Redis (Message Broker) 
+   ⟶
+Celery Worker (Processing + AI Engine)
 
 ---
 
@@ -68,24 +77,14 @@ Celery Worker (Processing)
 * Celery (background worker)
 
 ##Dev Tools
+* Docker
 * Git & GitHub
-
----
-
-## 🚧 Upcoming Features
-
-* AI-powered log analysis (LLM integration)
-* Root cause detection
-* Anomally detection system
-* Automated decision engine (self-healing action)
-* Alerting system 
 
 ---
 
 ## Setup Instructions
 
 ### 1. Clone the Repository
-
 
 git clone https://github.com/toweirdg/log-intelligence-engine.git
 cd log-intelligence-engine
@@ -99,18 +98,17 @@ venv\Scripts\activate   # Windows
 
 pip install -r requirements.txt
 
+
 ### 4. Environment Variables
 
 Create a `.env` file in the root directory and configure the following:
 
-
 DATABASE_URL=postgresql://username:password@localhost:5432/log_engine
-OPENAI_API_KEY=your_api_key_here
 REDIS_URL=redis://localhost:6379/0
 
 ---
 
-### 5. Start Services
+### 5. Run Services
 
 * Start Redis
  --redis-server.exe
@@ -121,15 +119,35 @@ REDIS_URL=redis://localhost:6379/0
 
 ---
 
-###🧪 API Usage
+## 🧪 API Example
+
+### Create Log
+
+```http
 POST /logs
-{
-  "message": "Database connection error",
+  "message": "Database connection timeout error",
   "level": "ERROR"
 }
 
+### 📊 Sample Output
+{
+  "id": 1,
+  "status": "processed_error",
+  "pattern": ["timeout"],
+  "action": "Restart service / check load",
+  "analysis": "Issue detected: timeout. Likely system instability."
+}
+```
 ---
-## 📌 Author
+### 🚧 Future Improvements:
+* LLM integration (local models like Ollama)
+* Advanced anomaly detection
+* Root cause analysis engine
+* Alerting & notification system
+* Role-based authentication (JWT)
+ 
+---
+## 👨‍💻 Author
 
 Gulshan Kumar
 

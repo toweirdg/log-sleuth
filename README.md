@@ -1,5 +1,5 @@
 # LogSleuth
-{Log Intelligence Engine 🚀}
+{Log Processing & Analysis Platform}
 
 AI-powered backend system for analyzing logs, detecting anomalies, and generating actionable insights using asynchronous processing.
 

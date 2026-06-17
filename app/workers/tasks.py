@@ -8,9 +8,11 @@ from app.services.log_processor import (
 
 from app.services.ai_engine import generate_insight
 from app.services.decision_engine import decide_action
+from app.services.severity_engine import get_severity
 
 from app.db.session import SessionLocal
 from app.models.log import Log
+
 
 @celery_app.task
 def process_log(log_id: int, message: str):
@@ -22,6 +24,10 @@ def process_log(log_id: int, message: str):
     try:
         category = categorize_log(message)
         pattern = detect_error_patterns(message)
+        severity_data = get_severity(pattern)
+        severity = severity_data["severity"]
+        action = severity_data["action"]
+
         is_repeated = detect_repeated_patterns(message)
 
         insight = generate_insight(message, category, pattern)
@@ -40,6 +46,7 @@ def process_log(log_id: int, message: str):
             log_entry.pattern = ", ".join(pattern) if pattern else None
             log_entry.action = action
             log_entry.analysis = insight
+            log_entry.severity = severity
 
             db.commit()
 

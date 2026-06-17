@@ -14,3 +14,4 @@ class Log(Base):
     analysis = Column(String, nullable=True)
     pattern = Column(String, nullable=True)
     action = Column(String, nullable=True)
+    severity = Column(String, nullable=True)

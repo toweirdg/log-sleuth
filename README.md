@@ -1,7 +1,7 @@
 # LogSleuth
 {Log Processing & Analysis Platform}
 
-AI-powered backend system for analyzing logs, detecting anomalies, and generating actionable insights using asynchronous processing.
+Backend system for log ingestion, asynchronous processing, pattern detection, and operational recommendations.
 
 ---
 

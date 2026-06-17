@@ -9,7 +9,7 @@ celery_app.autodiscover_tasks(["app.workers"])
 celery_app.conf.update(
     task_serializer="json",
     accept_content=["json"],
-    result_serilizer="json",
+    result_serializer="json",
     timezone="UTC",
     enable_utc=True,
 )

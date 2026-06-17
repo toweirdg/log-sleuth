@@ -42,6 +42,7 @@ def create_log(log: LogCreate, db: Session = Depends(get_db)):
     	}
 
 	except Exception as e:
+		print("CREATE_LOG_ERROR:", repr(e))
 		raise HTTPException(status_code=500, detail=str(e))
 
 
@@ -51,7 +52,7 @@ def get_log(log_id: int, db: Session = Depends(get_db)):
     log = db.query(Log).filter(Log.id == log_id).first()
 
     if not log:
-        raise HTTPException(status_code=404, details="Log not found")
+        raise HTTPException(status_code=404, detail="Log not found")
 
     return {
         "id": log.id,

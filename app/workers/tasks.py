@@ -9,6 +9,9 @@ from app.services.log_processor import (
 from app.services.ai_engine import generate_insight
 from app.services.decision_engine import decide_action
 from app.services.severity_engine import get_severity
+from app.services.metrics import(
+    processing_failures_total
+)
 
 from app.db.session import SessionLocal
 from app.models.log import Log
@@ -69,6 +72,7 @@ Insight: {insight}
     except Exception as e:
         db.rollback()
         print(f"[CELERY ERROR]: {e}")
+        processing_failures_total.inc() 
         raise e
 
     finally:

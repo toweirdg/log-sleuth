@@ -6,7 +6,7 @@ from app.models.log import Log
 from app.workers.tasks import process_log
 from app.schema.log import LogCreate
 from app.services.decision_engine import decide_action
-
+from app.services.metrics import logs_created_total
 
 router = APIRouter()
 
@@ -33,6 +33,7 @@ def create_log(log: LogCreate, db: Session = Depends(get_db)):
 		db.add(new_log)
 		db.commit()
 		db.refresh(new_log)
+		logs_created_total.inc()
 
 		process_log.delay(new_log.id, new_log.message)
 

@@ -82,6 +82,20 @@ Celery Worker (Processing + AI Engine)
 * Git & GitHub
 
 ---
+## Testing
+
+Run tests:
+
+```pytest```
+
+Current Coverage:
+* Log categorization
+* Pattern detection
+* Severity rule engine
+
+^^ 10 unit tests passing
+
+---
 
 ## Setup Instructions
 

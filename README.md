@@ -82,7 +82,7 @@ Celery Worker (Processing + AI Engine)
 * Git & GitHub
 
 ---
-## Testing
+## 🔎 Testing
 
 Run tests:
 

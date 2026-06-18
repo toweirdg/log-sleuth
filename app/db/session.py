@@ -2,6 +2,10 @@ from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 import os
 from dotenv import load_dotenv
+import structlog
+
+logger=structlog.get_logger()
+
 
 load_dotenv()
 

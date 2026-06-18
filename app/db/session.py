@@ -10,7 +10,7 @@ DATABASE_URL = os.getenv(
     "sqlite:///./logsleuth_test.db"
 )
 
-print("DATABASE_URL:", DATABASE_URL)
+logger.info("database_initialized")
 
 engine = create_engine(DATABASE_URL)
 

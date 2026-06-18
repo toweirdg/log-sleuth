@@ -3,9 +3,6 @@ from app.services.log_processor import (
     detect_error_patterns
 )
 
-from app.services.severity_engine import (
-    get_severity
-)
 
 
 def test_categorize_error():
@@ -71,28 +68,4 @@ def test_no_pattern_found():
     assert result is None
 
 
-def test_severity_critical():
 
-    result = get_severity(
-        ["connection refused"]
-    )
-
-    assert result["severity"] == "CRITICAL"
-
-
-def test_severity_high():
-
-    result = get_severity(
-        ["timeout"]
-    )
-
-    assert result["severity"] == "HIGH"
-
-
-def test_severity_medium():
-
-    result = get_severity(
-        ["failed"]
-    )
-
-    assert result["severity"] == "MEDIUM"

@@ -1,4 +1,16 @@
+import pytest
+
 from app.db.base import Base
 from app.db.session import engine
 
-Base.metadata.create_all(bind=engine)
+from app.models.log import Log
+
+
+@pytest.fixture(scope="session", autouse=True)
+def setup_database():
+
+    Base.metadata.create_all(bind=engine)
+
+    yield
+
+    Base.metadata.drop_all(bind=engine)

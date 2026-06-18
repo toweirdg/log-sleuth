@@ -26,8 +26,11 @@ def create_log(log: LogCreate, db: Session = Depends(get_db)):
 		new_log = Log(
 			message=log.message,
 			level=log.level,
-			status="pending"
-			)
+			service=log.service,
+                        host=log.host,
+                        metadata_json=log.metadata,
+                        status="pending"
+		)
 		
   
 		db.add(new_log)
@@ -86,10 +89,13 @@ def get_log(log_id: int, db: Session = Depends(get_db)):
         "id": log.id,
         "message": log.message,
         "level": log.level,
+        "service": log.service,
+        "host": log.host,
+        "metadata": log.metadata_json,
         "status": log.status,
-		"pattern": log.pattern,
-		"action": log.action,
-		"analysis": log.analysis
+	"pattern": log.pattern,
+	"action": log.action,
+	"analysis": log.analysis
     }
 
 

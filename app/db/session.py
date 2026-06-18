@@ -15,6 +15,7 @@ DATABASE_URL = os.getenv(
 )
 
 logger.info("database_initialized")
+print("DATABASE_URL =", DATABASE_URL)
 
 engine = create_engine(DATABASE_URL)
 

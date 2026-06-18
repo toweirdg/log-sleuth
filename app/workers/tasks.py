@@ -15,12 +15,16 @@ from app.services.metrics import(
 
 from app.db.session import SessionLocal
 from app.models.log import Log
-
+from app.core.logger import logger
 
 @celery_app.task
 def process_log(log_id: int, message: str):
 
-    print(f"Processing log {log_id}: {message}")
+    logger.info(
+        "processing_log",
+        log_id=log_id,
+        message=message
+    )
 
     db = SessionLocal()
 
@@ -53,7 +57,10 @@ def process_log(log_id: int, message: str):
 
             db.commit()
 
-            print(f"[UPDATED] Log {log_id} updated successfully")
+            logger.info(
+                "log_updated",
+                log_id=log_id
+            )
 
             if is_repeated:
                 print(f"[ALERT] Repeated issue detected for log {log_id}")
@@ -67,11 +74,17 @@ Insight: {insight}
 """)
 
         else:
-            print(f"[ERROR] Log {log_id} not found")
+            logger.error(
+                "log_not_found",
+                log_id=log_id
+            )
 
     except Exception as e:
         db.rollback()
-        print(f"[CELERY ERROR]: {e}")
+        logger.error(
+            "celery_processing_error",
+            error=str(e)
+        )
         processing_failures_total.inc() 
         raise e
 

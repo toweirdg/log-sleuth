@@ -31,7 +31,7 @@ def process_log(log_id: int, message: str):
         is_repeated = detect_repeated_patterns(message)
 
         insight = generate_insight(message, category, pattern)
-        action = decide_action(category, pattern)
+        recommended_action = decide_action(category, pattern)
 
         if "error" in message.lower():
             status = "processed_error"

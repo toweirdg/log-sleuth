@@ -45,6 +45,33 @@ def create_log(log: LogCreate, db: Session = Depends(get_db)):
 		print("CREATE_LOG_ERROR:", repr(e))
 		raise HTTPException(status_code=500, detail=str(e))
 
+@router.get("/logs")
+def list_logs(status: str = None, db: Session = Depends(get_db)):
+
+	query = db.query(Log)
+
+	if status:
+		query = query.filter(Log.status == status)
+
+	logs = query.all()
+
+	return logs
+
+
+@router.get("/logs/stats")
+def log_stats(db: Session = Depends(get_db)):
+
+    total = db.query(Log).count()
+    errors = db.query(Log).filter(Log.level == "ERROR").count()
+    processed = db.query(Log).filter(Log.status.like("processed%")).count()
+
+    return{
+        "total_logs":total,
+	"error_logs":errors,
+	"processed_logs":processed
+    }
+
+
 
 @router.get("/logs/{log_id}")
 def get_log(log_id: int, db: Session = Depends(get_db)):
@@ -64,28 +91,5 @@ def get_log(log_id: int, db: Session = Depends(get_db)):
 		"analysis": log.analysis
     }
 
-@router.get("/logs")
-def list_logs(status: str = None, db: Session = Depends(get_db)):
 
-	query = db.query(Log)
-
-	if status:
-		query = query.filter(Log.status == status)
-
-	logs = query.all()
-
-	return logs
-
-@router.get("/logs/stats")
-def log_stats(db: Session = Depends(get_db)):
-
-    total = db.query(Log).count()
-    errors = db.query(Log).filter(Log.level == "ERROR").count()
-    processed = db.query(Log).filter(Log.status.like("processed%")).count()
-
-    return{
-        "total_logs":total,
-	"error_logs":errors,
-	"processed_logs":processed
-    }
 

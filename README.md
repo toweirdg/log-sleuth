@@ -74,16 +74,7 @@ LogSleuth provides:
 ---
 ## Architecture 
 
-```mermaid
-flowchart LR
-
-Client --> API
-API --> PostgreSQL
-API --> Redis
-Redis --> Celery
-Celery --> RuleEngine
-RuleEngine --> PostgreSQL
-```
+![Architecture](docs/images/architecture.png)
 
 ### Design Decisions
 

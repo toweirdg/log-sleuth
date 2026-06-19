@@ -74,7 +74,11 @@ LogSleuth provides:
 ---
 ## Architecture 
 
+<<<<<<< HEAD
 [!Architecture](docs/images/architecture.png)
+=======
+![Architecture](docs/images/architecture.png)
+>>>>>>> 07a471d752ae7fcea6620c463ad6c641627e0ea7
 
 ### Design Decisions
 
@@ -164,22 +168,25 @@ LogSleuth provides:
 ---
 
 ## Project Structure
-
+```text
 app/
 ├── api/
+│   └── routes/
 ├── core/
 ├── db/
 ├── models/
 ├── schema/
 ├── services/
 ├── workers/
-├── main.py
-│
+└── main.py
+
 tests/
+
 docker-compose.yml
 requirements.txt
 README.md
 
+```
 ---
 ### Running Locally
 ```bash

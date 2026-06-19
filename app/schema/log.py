@@ -9,3 +9,26 @@ class LogCreate(BaseModel):
 	service:str|None=None
 	host:str|None=None
 	metadata: Optional[Dict[str, Any]] = None    	
+
+class LogResponse(BaseModel):
+
+    id: int
+    status: str
+
+class LogDetail(BaseModel):
+
+    id: int
+    message: str
+    level: str
+    status: str
+
+    service: str | None = None
+    host: str | None = None
+
+    pattern: str | None = None
+    action: str | None = None
+    analysis: str | None = None
+
+    severity: str | None = None
+
+    metadata: dict | None = None

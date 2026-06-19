@@ -4,9 +4,14 @@ from sqlalchemy.orm import Session
 from app.db.session import SessionLocal
 from app.models.log import Log
 from app.workers.tasks import process_log
-from app.schema.log import LogCreate
+
 from app.services.decision_engine import decide_action
 from app.services.metrics import logs_created_total
+from app.schema.log import (
+    LogCreate,
+    LogResponse,
+    LogDetail
+)
 
 router = APIRouter()
 
@@ -19,7 +24,10 @@ def get_db():
         db.close()
 
 
-@router.post("/logs")
+@router.post(
+    "/logs",
+    response_model=LogResponse
+)
 def create_log(log: LogCreate, db: Session = Depends(get_db)):
 
 	try :
@@ -77,7 +85,10 @@ def log_stats(db: Session = Depends(get_db)):
 
 
 
-@router.get("/logs/{log_id}")
+@router.get(
+    "/logs/{log_id}",
+    response_model=LogDetail
+)
 def get_log(log_id: int, db: Session = Depends(get_db)):
 
     log = db.query(Log).filter(Log.id == log_id).first()
@@ -95,8 +106,9 @@ def get_log(log_id: int, db: Session = Depends(get_db)):
         "status": log.status,
 	"pattern": log.pattern,
 	"action": log.action,
-	"analysis": log.analysis
-    }
+	"analysis": log.analysis,
+        "severity": log.severity 
+   }
 
 
 

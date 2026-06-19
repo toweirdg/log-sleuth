@@ -10,7 +10,7 @@ Asynchronous log ingestion and analysis platform designed to demonstrate backend
 
 ---
 
-## Highlights
+## ✨Highlights
 
 - Async log processing using Celery + Redis
 - Dockerized multi-service architecture
@@ -40,7 +40,7 @@ LogSleuth provides:
 
 ---
 
-## Log Processing Workflow
+## ❯❯❯❯Log Processing Workflow
 
 1. Client submits log via POST /logs
 2. FastAPI stores log in PostgreSQL
@@ -52,7 +52,7 @@ LogSleuth provides:
 8. User retrieves result via API
 
 ---
-## Features
+## ✅Features
 
 - FastAPI REST API
 - PostgreSQL persistence layer
@@ -72,13 +72,9 @@ LogSleuth provides:
 - 31 automated tests
 
 ---
-## Architecture 
+## ➜🟦➜🔶➜Architecture 
 
-<<<<<<< HEAD
 [!Architecture](docs/images/architecture.png)
-=======
-![Architecture](docs/images/architecture.png)
->>>>>>> 07a471d752ae7fcea6620c463ad6c641627e0ea7
 
 ### Design Decisions
 
@@ -89,7 +85,7 @@ LogSleuth provides:
 - Indexed columns optimize query performance
 
 ---
-## API Endpoints Table
+## ⊞API Endpoints Table
 
 | Method | Endpoint    | Description        |
 | ------ | ----------- | ------------------ |
@@ -151,7 +147,7 @@ LogSleuth provides:
 
 ---
 
-## Screenshots
+## 📸Screenshots
 
 ### API Documentaion
 
@@ -167,7 +163,7 @@ LogSleuth provides:
 
 ---
 
-## Project Structure
+## 🖧Project Structure
 ```text
 app/
 ├── api/
@@ -210,7 +206,7 @@ docker compose up --build
 
 ---
 
-## Testing
+## 🧪Testing
 
 Run: 
 ```bash

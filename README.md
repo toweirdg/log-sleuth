@@ -1,168 +1,239 @@
 # LogSleuth
-{Log Processing & Analysis Platform}
 
-Backend system for log ingestion, asynchronous processing, pattern detection, and operational recommendations.
+Backend observability platform for ingesting, processing, classifying, and analyzing application logs using asynchronous event-driven architecture.
+
+Asynchronous log ingestion and analysis platform designed to demonstrate backend engineering concepts including task queues, observability, API design, and database optimization.
+
+[![Tests](https://github.com/toweirdg/log-sleuth/actions/workflows/tests.yml/badge.svg)](https://github.com/toweirdg/log-sleuth/actions/workflows/tests.yml)
+
+31 Tests Passing • Dockerized • CI/CD Enabled • Async Processing
 
 ---
 
+## Highlights
+
+- Async log processing using Celery + Redis
+- Dockerized multi-service architecture
+- CI pipeline with GitHub Actions
+- Prometheus metrics and health monitoring
+- Filtering, pagination, and sorting support
+- 31 automated tests
+
+---
 ## 🧠 Problem
 
-Modern distributed systems generate massive volumes of logs, making it difficult to:
-
-* Detect issues in real-time
-* Identify root causes quickly
-* Prevent failures before escalation
+* Modern systems generate large volumes of operational logs. 
+* Manual inspection becomes slow and inefficient when identifying failures, repeated issues, and service disruptions.
 
 ---
 
 ## 💡 Solution
 
-This project implements a scalable backend system that:
+LogSleuth provides:
 
-* Ingests logs via REST API
-* Stores logs in PostgreSQL
-* Processes logs asynchronously using Celery + Redis
-* Analyzes logs using rule-based + AI-inspired logic  
-* Generates insights and recommended actions
-  
----
-
-## 🚀 Demo Flow
-
-1. `POST /logs` → Submit log  
-2. Background worker processes log asynchronously  
-3. AI engine generates insight + action  
-4. `GET /logs/{id}` → Retrieve processed result  
-5. `GET /logs/stats` → View aggregated system metrics  
+* Centralized log ingestion
+* Asynchronous background processing
+* Rule-based pattern detection
+* Severity classification
+* Operational recommendations
+* Metrics and health monitoring
 
 ---
 
-## ⚙️ Features
+## Log Processing Workflow
 
-* FastAPI backend with RESTful design  
-* PostgreSQL integration with SQLAlchemy ORM  
-* Asynchronous processing using Celery + Redis  
-* Rule-based + AI-inspired log analysis engine  
-* Automated decision engine for system actions  
-* Log analytics endpoint (`/logs/stats`)  
-* Dockerized services for reproducible setup 
+1. Client submits log via POST /logs
+2. FastAPI stores log in PostgreSQL
+3. Celery task is queued through Redis
+4. Worker processes log
+5. Rule engine detects patterns
+6. Severity and actions are generated
+7. Processed result is stored
+8. User retrieves result via API
 
 ---
+## Features
 
-## 🏗️ Architecture (Current)
+- FastAPI REST API
+- PostgreSQL persistence layer
+- SQLAlchemy ORM
+- Redis message broker
+- Celery background workers
+- Rule-based pattern detection
+- Severity classification engine
+- Action recommendation engine
+- Filtering, pagination, and sorting APIs
+- Prometheus-compatible monitoring metrics
+- Health check endpoint
+- Structured logging via structlog
+- Indexed database queries for efficient log retrieval
+- Docker Compose deployment
+- GitHub Actions CI pipeline
+- 31 automated tests
 
-Client 
-   ⟶
-FastAPI (API Layer) 
-   ⟶ 
-PostgreSQL (Storage) 
-   ⟶
-Redis (Message Broker) 
-   ⟶
-Celery Worker (Processing + AI Engine)
+---
+## Architecture 
 
+```mermaid
+flowchart LR
+
+A[Client] --> B[FastAPI API]
+B --> C[(PostgreSQL)]
+B --> D[(Redis)]
+D --> E[Celery Worker]
+E --> F[Rule Engine]
+F --> C
+```
+
+### Design Decisions
+
+- API requests return immediately after queuing tasks
+- Redis acts as broker between API and workers
+- Celery handles asynchronous processing
+- PostgreSQL stores raw and processed logs
+- Indexed columns optimize query performance
+
+---
+## API Endpoints Table
+
+| Method | Endpoint    | Description        |
+| ------ | ----------- | ------------------ |
+| POST   | /logs       | Create log         |
+| GET    | /logs       | List logs          |
+| GET    | /logs/{id}  | Retrieve log       |
+| GET    | /logs/stats | Statistics         |
+| GET    | /health     | Health check       |
+| GET    | /metrics    | Prometheus metrics |
+
+
+## Example Request 
+```json
+{
+  "message": "database connection refused",
+  "level": "ERROR",
+  "service": "auth-service",
+  "host": "server-01"
+}
+```
+## Example Response
+```json
+{
+  "id": 7,
+  "status": "processed",
+  "severity": "CRITICAL",
+  "pattern": "connection refused",
+  "action": "Investigate service availability"
+}
+```
 ---
 
 ### 🛠️ Tech Stack
 
-##Core Backend
+### Core Backend
 * Python
 * FastAPI
 * SQLAlchemy
+* Pydantic
 
-##Database
+### Database
 * PostgreSQL
 
-##Async Processing
-* Redis (message broker)
-* Celery (background worker)
+### Async Processing
+* Redis 
+* Celery 
 
-##Dev Tools
+### Observability
+* Prometheus
+* structlog
+
+### DevOps
 * Docker
+* Docker Compose
 * Git & GitHub
 
----
-## 🔎 Testing
-
-Run tests:
-
-```pytest```
-
-Current Coverage:
-* Log categorization
-* Pattern detection
-* Severity rule engine
-
-^^ 10 unit tests passing
+### Testing
+* Pytest
 
 ---
 
-## Setup Instructions
+## Screenshots
 
-### 1. Clone the Repository
+### API Documentaion
 
-git clone https://github.com/toweirdg/log-intelligence-engine.git
-cd log-intelligence-engine
+![Swagger](docs/images/swagger.png)
 
-### 2. Create Virtual Environment
+### CI Pipeline
+
+![Github Actions](docs/images/github-actions.png)
+
+### Metrics Endpoint
+
+![Metrics](docs/images/metrics.png)
+
+---
+
+## Project Structure
+
+app/
+├── api/
+├── core/
+├── db/
+├── models/
+├── schema/
+├── services/
+├── workers/
+├── main.py
+│
+tests/
+docker-compose.yml
+requirements.txt
+README.md
+
+---
+### Running Locally
+```bash
+git clone https://github.com/toweirdg/log-sleuth.git
+
+cd log-sleuth
 
 python -m venv venv
-venv\Scripts\activate   # Windows 
 
-### 3. Install Dependencies
+venv\Scripts\activate
 
 pip install -r requirements.txt
 
-
-### 4. Environment Variables
-
-Create a `.env` file in the root directory and configure the following:
-
-DATABASE_URL=postgresql://username:password@localhost:5432/log_engine
-REDIS_URL=redis://localhost:6379/0
-
----
-
-### 5. Run Services
-
-* Start Redis
- --redis-server.exe
-* Start FastAPI
- --uvicorn app.main:app --reload
-* Start Celery Worker(Windows Fix)
- --celery -A app.workers.celery_app worker --pool=solo --loglevel=info
-
----
-
-## 🧪 API Example
-
-### Create Log
-
-```http
-POST /logs
-  "message": "Database connection timeout error",
-  "level": "ERROR"
-}
-
-### 📊 Sample Output
-{
-  "id": 1,
-  "status": "processed_error",
-  "pattern": ["timeout"],
-  "action": "Restart service / check load",
-  "analysis": "Issue detected: timeout. Likely system instability."
-}
+uvicorn app.main:app --reload
 ```
 ---
-### 🚧 Future Improvements:
-* LLM integration (local models like Ollama)
-* Advanced anomaly detection
-* Root cause analysis engine
-* Alerting & notification system
-* Role-based authentication (JWT)
- 
+### Run with Docker
+```bash
+docker compose up --build
+```
+
+---
+
+## Testing
+
+Run: 
+```bash
+pytest -v
+```
+31 automated tests covering:
+
+- API endpoints
+- Rule engine
+- Severity classification
+- Decision engine
+- Health checks
+- Metrics endpoint
+- Filtering
+- Pagination
+- Sorting
+
 ---
 ## 👨‍💻 Author
 
 Gulshan Kumar
 
+- GitHub: https://github.com/toweirdg
+- LinkedIn: https://linkedin.com/in/glshankrtoowd

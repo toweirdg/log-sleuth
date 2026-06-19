@@ -65,6 +65,10 @@ def list_logs(
     level: str = None,
     severity: str = None,
     service: str = None,
+    host: str = None,
+    limit: int = 10,
+    skip: int = 0,
+    sort_by: str = "id",
     db: Session = Depends(get_db)
 ):
 
@@ -81,6 +85,11 @@ def list_logs(
 
     if service:
         query = query.filter(Log.service == service)
+
+    if hasattr(Log, sort_by):
+        query = query.order_by(getattr(Log, sort_by))
+
+    query = query.offset(skip).limit(limit)
 
     return query.all()
 

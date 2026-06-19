@@ -77,12 +77,12 @@ LogSleuth provides:
 ```mermaid
 flowchart LR
 
-A[Client] --> B[FastAPI API]
-B --> C[(PostgreSQL)]
-B --> D[(Redis)]
-D --> E[Celery Worker]
-E --> F[Rule Engine]
-F --> C
+Client --> API
+API --> PostgreSQL
+API --> Redis
+Redis --> Celery
+Celery --> RuleEngine
+RuleEngine --> PostgreSQL
 ```
 
 ### Design Decisions
@@ -173,22 +173,26 @@ F --> C
 ---
 
 ## Project Structure
-
+:::writing{variant="document" id="64182"}
+```text
 app/
 ├── api/
+│   └── routes/
 ├── core/
 ├── db/
 ├── models/
 ├── schema/
 ├── services/
 ├── workers/
-├── main.py
-│
+└── main.py
+
 tests/
+
 docker-compose.yml
 requirements.txt
 README.md
 
+```
 ---
 ### Running Locally
 ```bash

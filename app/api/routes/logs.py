@@ -57,17 +57,32 @@ def create_log(log: LogCreate, db: Session = Depends(get_db)):
 		print("CREATE_LOG_ERROR:", repr(e))
 		raise HTTPException(status_code=500, detail=str(e))
 
+
+
 @router.get("/logs")
-def list_logs(status: str = None, db: Session = Depends(get_db)):
+def list_logs(
+    status: str = None,
+    level: str = None,
+    severity: str = None,
+    service: str = None,
+    db: Session = Depends(get_db)
+):
 
-	query = db.query(Log)
+    query = db.query(Log)
 
-	if status:
-		query = query.filter(Log.status == status)
+    if status:
+        query = query.filter(Log.status == status)
 
-	logs = query.all()
+    if level:
+        query = query.filter(Log.level == level)
 
-	return logs
+    if severity:
+        query = query.filter(Log.severity == severity)
+
+    if service:
+        query = query.filter(Log.service == service)
+
+    return query.all()
 
 
 @router.get("/logs/stats")

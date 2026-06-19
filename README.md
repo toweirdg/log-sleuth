@@ -1,6 +1,6 @@
 # LogSleuth
 
-Backend observability platform for ingesting, processing, classifying, and analyzing application logs using asynchronous event-driven architecture.
+Backend observability platform for ingesting, processing, classifying, and analyzing application logs using FastAPI, PostgreSQL, Redis, and Celery.
 
 Asynchronous log ingestion and analysis platform designed to demonstrate backend engineering concepts including task queues, observability, API design, and database optimization.
 

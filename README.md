@@ -74,16 +74,7 @@ LogSleuth provides:
 ---
 ## Architecture 
 
-```mermaid
-flowchart LR
-
-A[Client] --> B[FastAPI API]
-B --> C[(PostgreSQL)]
-B --> D[(Redis)]
-D --> E[Celery Worker]
-E --> F[Rule Engine]
-F --> C
-```
+[!Architecture](docs/images/architecture.png)
 
 ### Design Decisions
 

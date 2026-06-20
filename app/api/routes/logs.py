@@ -85,10 +85,17 @@ def list_logs(
 
     if service:
         query = query.filter(Log.service == service)
+    
+    if host:
+        query = query.filter(Log.host == host)
 
-    if hasattr(Log, sort_by):
-        query = query.order_by(getattr(Log, sort_by))
+    ALLOWED_SORT_FIELDS = {"id", "created_at", "severity", "status", "level"}
 
+    sort_field = sort_by if sort_by in ALLOWED_SORT_FIELDS else "id"
+    if hasattr(Log, sort_field):
+        query = query.order_by(getattr(Log, sort_field))
+
+    
     query = query.offset(skip).limit(limit)
 
     return query.all()

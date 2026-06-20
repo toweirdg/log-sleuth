@@ -9,14 +9,23 @@ class Log(Base):
 
     id = Column(Integer, primary_key=True, index=True)
     message = Column(String, nullable=False)
-    service = Column(String, nullable=True, index=True)
-    host = Column(String, nullable=True, index=True)
+    level = Column(String(20), nullable=False, index=True)
+    service = Column(String(100), index=True)
+    host = Column(String(100))
     metadata_json = Column(JSON, nullable=True)
     level = Column(String, default="INFO", index=True)
     timestamp = Column(DateTime, default=lambda: datetime.now(UTC))
-    status = Column(String, default="pending", index=True)
+    status = Column(String(20), default="pending", index=True)
     analysis = Column(String, nullable=True)
-    pattern = Column(String, nullable=True)
-    action = Column(String, nullable=True)
-    severity = Column(String, nullable=True, index=True)
+    pattern = Column(String(200))
+    action = Column(String(500))
+    severity = Column(String(20))
+    created_at = Column(DateTime, default=datetime.datetime.utcnow, index=True)
+    processed_at = Column(DateTime)
     
+
+    __table_args__ = (
+        Index("ix_logs_service_level", "service", "level"),
+        Index("ix_logs_status_created", "status", "created_at"),
+    )
+

@@ -17,16 +17,40 @@ from app.db.session import SessionLocal
 from app.models.log import Log
 from app.core.logger import logger
 
+
+from celery import shared_task
+from celery.utils.log import get_task_logger
+import structlog
+
+logger = structlog.get_logger()
+
+@shared_task(
+    bind=True,
+    max_retries=3,
+    default_retry_delay=5,
+    autoretry_for=(Exception,),
+    retry_backoff=True,
+    retry_backoff_max=60,
+    retry_jitter=True,
+)
+
 @celery_app.task
-def process_log(log_id: int, message: str):
-
-    logger.info(
-        "processing_log",
-        log_id=log_id,
-        message=message
-    )
-
-    db = SessionLocal()
+def process_log(self, log_id: int, message: str):
+    try:
+        logger.info("processing_log", log_id=log_id, attempt=self.request.retries + 1)
+        logger.info("processing_log",log_id=log_id,message=message)
+        result = run_rule_engine(log_id)
+        logger.info("log_processed", log_id=log_id, severity=result.severity)
+        return result
+    except Exception as exc:
+        logger.error(
+            "log_processing_failed",
+            log_id=log_id,
+            attempt=self.request.retries + 1,
+            error=str(exc),
+        )
+        raise self.retry(exc=exc)
+        db = SessionLocal()
 
     try:
         category = categorize_log(message)

@@ -74,11 +74,11 @@ LogSleuth provides:
 ---
 ## Architecture 
 
-<<<<<<< HEAD
+
 [!Architecture](docs/images/architecture.png)
 =======
 ![Architecture](docs/images/architecture.png)
->>>>>>> 07a471d752ae7fcea6620c463ad6c641627e0ea7
+
 
 ### Design Decisions
 
@@ -196,6 +196,10 @@ cd log-sleuth
 
 python -m venv venv
 
+# Linux / macOS
+source venv/bin/activate
+
+# Windows
 venv\Scripts\activate
 
 pip install -r requirements.txt

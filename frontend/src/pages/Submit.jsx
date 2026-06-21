@@ -11,12 +11,11 @@ const EXAMPLES = [
 
 export function Submit() {
   const [form, setForm] = useState({ message: '', level: 'ERROR', service: '', host: '', metadata: '' })
-  const [result, setResult] = useState<SubmitResponse | null>(null)
+  const [result, setResult] = useState(null)
   const [loading, setLoading] = useState(false)
-  const [error, setError] = useState<string | null>(null)
+  const [error, setError] = useState(null)
 
-  function updateField(k, v) {setForm(f => ({ ...f, [k]: v }))
-}
+  function set(k, v) {setForm(f => ({ ...f, [k]: v }))}
 
   function fillExample() {
     const ex = EXAMPLES[Math.floor(Math.random() * EXAMPLES.length)]

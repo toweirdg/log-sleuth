@@ -117,8 +117,8 @@ def log_stats(db: Session = Depends(get_db)):
 
 
 @router.get(
-    "/logs/{log_id}",
-    response_model=LogDetail
+    "/logs/{log_id}", 
+    response_model=LogResponse
 )
 def get_log(log_id: int, db: Session = Depends(get_db)):
 
